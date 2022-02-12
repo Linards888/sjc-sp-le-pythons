@@ -1,1 +1,1 @@
-# sjc-sp-le-pythons
+# sjc-spēle-pythons
