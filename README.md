@@ -9,3 +9,4 @@ tu arī gribi nosprākt?
 bet protams!
 
 treners dusmigs
+noteikti...
