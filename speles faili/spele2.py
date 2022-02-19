@@ -1,12 +1,6 @@
 from tkinter import *
 import random
 import keyboard
-canvas_width = 600
-canvas_height = 600
-master = Tk()
-w = Canvas(master, 
-           width=canvas_width, 
-           height=canvas_height)
 
 x1=300
 y1=300
@@ -14,6 +8,19 @@ x2=150
 y2=250
 e=5
 f="blue"
+g = 200
+x = 10
+y = 10
+a = 100
+b = 100
+direction = None
+
+def move():
+    global x_vel
+    global y_vel
+    global direction
+    if direction is not None:
+        w.move(rect, x_vel,y_vel)
 
 def salidzinam():
     global x2, y2, e, f, p11, p12, p21, p22, pl1, pl2, b2, b1, b3, pl3, p31, p32
@@ -42,86 +49,47 @@ def salidzinam():
         pl2 = p22 + 7
         b2=w.create_line(p21, p22, p21, pl2, width=5, fill="red" )
 
-    Start()
-
-# W variant (uz augšu)
-def uzaugsu():
-    global x1, y1, x2, y2, e, f, pl3, p31, p32
-    x2=x1+0
-    y2=y1-10
-    w.create_line(x1, y1, x2, y2, width=e, fill=f )
-    x1=x2
-    y1=y2
-    print(x1)
-    print(y1)
-    salidzinam()
-
-# D variants (pa labi)
-def palabi():
-    global x1, y1, x2, y2, e, f, pl3, p31, p32
-    x2=x1 + 10
-    y2 = y1 + 0
-    w.create_line(x1, y1, x2, y2, width=e, fill=f )
-    x1=x2
-    y1=y2
-    print(x1)
-    print(y1)
-    salidzinam()
-
-# S variants (uz leju)
-def uzleju():
-    global x1, y1, x2, y2, e, f, pl3, p31, p32
-    x2=x1+0
-    y2=y1+10
-    w.create_line(x1, y1, x2, y2, width=e, fill=f )
-    x1=x2
-    y1=y2
-    print(x1)
-    print(y1)
-    salidzinam()
-
-# A variants (pa kreisi)
-def pakreisi():
-    global x1, y1, x2, y2, e, f, pl3, p31, p32
-    x2=x1 - 10
-    y2 = y1 + 0
-    w.create_line(x1, y1, x2, y2, width=e, fill=f )
-    x1=x2
-    y1=y2
-    print(x1)
-    print(y1)
-    salidzinam()
+    on_keypress()
 
 
+def on_keypress(event):
+    global direction
+    global x_vel
+    global y_vel
+    window.bind_all('<KeyPress>', on_keypress)
+    window.bind_all('<KeyRelease>', on_keyrelease)
 
+    while g > 0:      
+      if event.keysym == "Left":
+        direction = "left"
+        x_vel = -5
+        y_vel = 0
+      if event.keysym == "Right":
+        direction = "right"
+        x_vel = 5
+        y_vel = 0
+      if event.keysym == "Down":
+        direction = "down"
+        x_vel = 0
+        y_vel = 5
+      if event.keysym == "Up":
+        direction = "up"
+        x_vel = 0
+        y_vel = -5
+      move()
 
-def Start():
-    global p11, p12, p21, p22, pl1, pl2, b1, b2, x1, y1, x2, y2, e, f, pl3, p31, p32
-    w.pack()
-    g = 259
-    while g>0:
-       k = input("virziens")
-       if keyboard.is_pressed("w"):
-           g = g - 1
-           uzaugsu()
-    
-       if keyboard.is_pressed('s'):
-           g = g - 1
-           uzleju()
-     
-       if keyboard.is_pressed('d'):
-           g = g - 1
-           palabi()
-    
-       if keyboard.is_pressed('a'):
-           g = g - 1
-           pakreisi()
-    
-    mainloop()
+def on_keyrelease(event):
+    global direction
+    direction = None
+
 
 def StartpaPusei():
-    global p11, p12, p21, p22, pl1, pl2, b1, b2, b3, x1, y1, x2, y2, e, f, pl3, p31, p32
+    global p11, p12, p21, p22, pl1, pl2, b1, b2, b3, x1, y1, x2, y2, e, f, pl3, p31, p32, coord, rect
     w.pack()
+    
+    coord = [x, y, a, b]
+    rect = w.create_rectangle(*coord, outline="#fb0", fill="#fb0")
+    
     
     p11 = random.randrange(50, 550, 10)
     p12 = random.randrange(50, 550, 10)
@@ -137,7 +105,10 @@ def StartpaPusei():
     b1=w.create_line(p11, p12, p11, pl1, width=5, fill="blue" )
     b3=w.create_line(p31, p32, p31, pl3, width=5, fill="blue" )
     b2=w.create_line(p21, p22, p21, pl2, width=5, fill="red" )
-    Start()
+
+    
+    window.mainloop()
+    on_keypress()
 
 def clicked1(event):
     global pStartRec, pStartTex, pSettingsRec, pSettingsTex
@@ -160,6 +131,20 @@ def jaj():
     w.tag_bind(pSettingsTex, "<Button-1>", clicked2)
     
     mainloop()
+
+
+window = Tk()
+
+canvas_width = 600
+canvas_height = 600
+
+#canvas and drawing
+w=Canvas(window, height = canvas_height, width = canvas_width)
+w.grid(row=0, column=0, sticky=W)
+
+#capturing keyboard inputs and assigning to function
+
+
 jaj()
 
 
