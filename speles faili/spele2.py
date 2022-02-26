@@ -1,18 +1,17 @@
 from tkinter import *
 import random
 import keyboard
+import time
 
-x1=300
-y1=300
-x2=150
-y2=250
+t=310
+z=300
 e=5
 f="blue"
 g = 200
-x = 10
-y = 10
-a = 100
-b = 100
+x = 310
+y = 310
+a = 305
+b = 305
 direction = None
 
 def move():
@@ -21,76 +20,83 @@ def move():
     global direction
     if direction is not None:
         w.move(rect, x_vel,y_vel)
+    salidzinam()
 
 def salidzinam():
-    global x2, y2, e, f, p11, p12, p21, p22, pl1, pl2, b2, b1, b3, pl3, p31, p32
-    print(x2)
-    print(y2)
-    if x2==p11 and y2==p12 and pl1:
+    global e, f, p11, p12, p21, p22, pl1, pl2, b2, b1, b3, pl3, p31, p32, w
+    if z==p11 and t==p12 and pl1:
         e=10
         print("palielinam")
         w.delete(b1)
         p11 = random.randrange(50, 550, 10)
         p12 = random.randrange(50, 550, 10)
-        pl1 = p12 + 7
+        pl1 = p12 + 5
         b1=w.create_line(p11, p12, p11, pl1, width=5, fill="blue" )
 
-    if x2==p31 and y2==p32 and pl3:
+    if z==p31 and t==p32 and pl3:
         w.delete(b3)
         p31 = random.randrange(50, 550, 10)
         p32 = random.randrange(50, 550, 10)
-        pl3 = p32 + 7
+        pl3 = p32 + 5
         b1=w.create_line(p31, p32, p31, pl3, width=5, fill="blue" )
 
-    if x2==p21 and y2==p22 and pl2:
+    if z==p21 and t==p22 and pl2:
         w.delete(b2)
         p21 = random.randrange(50, 550, 10)
         p22 = random.randrange(50, 550, 10)
-        pl2 = p22 + 7
+        pl2 = p22 + 5
         b2=w.create_line(p21, p22, p21, pl2, width=5, fill="red" )
 
     on_keypress()
 
 
 def on_keypress(event):
-    global direction
-    global x_vel
-    global y_vel
-    window.bind_all('<KeyPress>', on_keypress)
-    window.bind_all('<KeyRelease>', on_keyrelease)
-
-    while g > 0:      
-      if event.keysym == "Left":
+    global direction, z, t, x_vel, y_vel
+    if event.keysym == "Left":
         direction = "left"
-        x_vel = -5
+        x_vel = -10
         y_vel = 0
-      if event.keysym == "Right":
+        z = z - 10
+        print(z)
+        move()
+    if event.keysym == "Right":
         direction = "right"
-        x_vel = 5
+        x_vel = 10
         y_vel = 0
-      if event.keysym == "Down":
+        z = z + 10
+        print(z)
+        move()
+    if event.keysym == "Down":
         direction = "down"
         x_vel = 0
-        y_vel = 5
-      if event.keysym == "Up":
+        y_vel = 10
+        t = t + 10
+        print(t)
+        move()
+    if event.keysym == "Up":
         direction = "up"
         x_vel = 0
-        y_vel = -5
-      move()
+        y_vel = -10
+        t = t - 10
+        print(t)
+        move()
+
+    mainloop()
+    
 
 def on_keyrelease(event):
     global direction
     direction = None
 
 
+
 def StartpaPusei():
-    global p11, p12, p21, p22, pl1, pl2, b1, b2, b3, x1, y1, x2, y2, e, f, pl3, p31, p32, coord, rect
+    global p11, p12, p21, p22, pl1, pl2, b1, b2, b3, e, f, pl3, p31, p32, coord, rect
     w.pack()
     
-    coord = [x, y, a, b]
-    rect = w.create_rectangle(*coord, outline="#fb0", fill="#fb0")
-    
-    
+    window.bind_all('<KeyPress>', on_keypress)
+    window.bind_all('<KeyRelease>', on_keyrelease)
+
     p11 = random.randrange(50, 550, 10)
     p12 = random.randrange(50, 550, 10)
     p21 = random.randrange(50, 550, 10)
@@ -98,14 +104,16 @@ def StartpaPusei():
     p31 = random.randrange(50, 550, 10)
     p32 = random.randrange(50, 550, 10)
 
-    pl1 = p12 + 7
-    pl2 = p22 + 7
-    pl3 = p32 + 7
+    pl1 = p12 + 5
+    pl2 = p22 + 5
+    pl3 = p32 + 5
 
     b1=w.create_line(p11, p12, p11, pl1, width=5, fill="blue" )
     b3=w.create_line(p31, p32, p31, pl3, width=5, fill="blue" )
     b2=w.create_line(p21, p22, p21, pl2, width=5, fill="red" )
 
+    coord = [305, 305, 300, 300]
+    rect = w.create_rectangle(*coord, outline="#000000", fill="#00ff00")
     
     window.mainloop()
     on_keypress()
@@ -129,7 +137,6 @@ def jaj():
     pSettingsTex = w.create_text(50, 15, text="Settings")
     w.tag_bind(pSettingsRec, "<Button-1>", clicked2)
     w.tag_bind(pSettingsTex, "<Button-1>", clicked2)
-    
     mainloop()
 
 
